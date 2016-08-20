@@ -1,3 +1,5 @@
 web/elm/elm-stuff
 _build
 node_modules
+deps/
+priv/
