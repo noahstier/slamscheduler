@@ -20,7 +20,9 @@ defmodule Slamscheduler.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Slamscheduler do
-  #   pipe_through :api
-  # end
+  scope "/api", Slamscheduler do
+    pipe_through :api
+
+    resources "/volunteers", VolunteerController
+  end
 end
