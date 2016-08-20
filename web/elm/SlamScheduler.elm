@@ -1,3 +1,5 @@
+module SlamScheduler exposing (..)
+
 import Html exposing (div, text, Html, h2)
 import List exposing (map)
 import Html.App as App
@@ -21,7 +23,7 @@ type alias Slot =
   , instructor : String
   }
 
-type Msg = None
+type Action = None
 
 model : Model
 model =
@@ -53,21 +55,21 @@ model =
     }
   ]
 
-update : Msg -> Model -> Model
-update msg model = model
+update : Action -> Model -> Model
+update action model = model
 
-slotView : Slot -> Html Msg
+slotView : Slot -> Html Action
 slotView slot =
   div [] [ text (slot.skill ++ " - " ++ slot.instructor) ]
 
-dayView : Day -> Html Msg
+dayView : Day -> Html Action
 dayView day =
   div []
     [ h2 [] [ text day.name ]
     , div [] (map slotView day.slots)
     ]
 
-view : Model -> Html Msg
+view : Model -> Html Action
 view model =
   div [] (map dayView model)
 
