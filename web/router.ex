@@ -24,5 +24,6 @@ defmodule Slamscheduler.Router do
     pipe_through :api
 
     resources "/volunteers", VolunteerController
+    get "/schedule", ScheduleController, :generate
   end
 end

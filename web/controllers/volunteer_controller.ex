@@ -39,5 +39,4 @@ defmodule Slamscheduler.VolunteerController do
       }
     ]
   end
-
 end
