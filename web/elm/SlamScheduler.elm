@@ -1,6 +1,6 @@
 module SlamScheduler exposing (..)
 
-import Html exposing (div, text, Html, h2)
+import Html exposing (div, text, Html, h2, p, ul, li)
 import List exposing (map)
 import Html.App as App
 
@@ -11,7 +11,10 @@ main =
     , update = update
     }
 
-type alias Model = List Day
+type alias Model = 
+  { schedule : List Day
+  , volunteers : List Volunteer 
+  }
 
 type alias Day =
   { name : String
@@ -23,37 +26,55 @@ type alias Slot =
   , instructor : String
   }
 
+type alias Volunteer =
+  { name : String
+  , skills : List String
+  , availability: List String
+  }
+
 type Action = None
 
 model : Model
 model =
-  [ { name = "Monday"
-    , slots =
-        [ { skill = "guitar", instructor = "Noah" }
-        ]
-    }
-  , { name = "Tuesday"
-    , slots =
+  { schedule =
+    [ { name = "Monday"
+      , slots =
+          [ { skill = "guitar", instructor = "Noah" }
+          ]
+      }
+    , { name = "Tuesday"
+      , slots =
+          [ { skill = "slacklining", instructor = "James" }
+          ]
+      }
+    , { name = "Wednesday"
+      , slots =
+          [ { skill = "guitar", instructor = "Noah" }
+          , { skill = "slacklining", instructor = "James" }
+          ]
+      }
+    , { name = "Thursday"
+      , slots =
         [ { skill = "slacklining", instructor = "James" }
         ]
-    }
-  , { name = "Wednesday"
-    , slots =
+      }
+    , { name = "Friday"
+      , slots =
         [ { skill = "guitar", instructor = "Noah" }
-        , { skill = "slacklining", instructor = "James" }
         ]
-    }
-  , { name = "Thursday"
-    , slots =
-      [ { skill = "slacklining", instructor = "James" }
-      ]
-    }
-  , { name = "Friday"
-    , slots =
-      [ { skill = "guitar", instructor = "Noah" }
-      ]
-    }
-  ]
+      }
+    ]
+  , volunteers =
+    [ { name = "James Vaughan"
+      , skills = [ "slacklining" ]
+      , availability = [ "tuesday", "wednesday", "thursday" ]
+      }
+    , { name = "Noah Stier"
+      , skills = ["guitar"]
+      , availability = ["monday", "wednesday", "friday"]
+      }
+    ]
+  }
 
 update : Action -> Model -> Model
 update action model = model
@@ -69,7 +90,20 @@ dayView day =
     , div [] (map slotView day.slots)
     ]
 
+volunteerView : Volunteer -> Html Action
+volunteerView volunteer =
+  div []
+    [ p [] [ text volunteer.name ] 
+    , ul []
+      (map (\skill -> li [] [ text skill ]) volunteer.skills)
+    , ul []
+      (map (\day -> li [] [ text day ]) volunteer.availability)
+    ]
+
 view : Model -> Html Action
 view model =
-  div [] (map dayView model)
+  div [] 
+    [ div [] (map dayView model.schedule)
+    , div [] (map volunteerView model.volunteers)
+    ]
 
