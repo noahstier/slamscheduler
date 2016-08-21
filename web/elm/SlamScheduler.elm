@@ -1,7 +1,8 @@
 module SlamScheduler exposing (..)
 
-import Html exposing (div, text, Html, h2, p, ul, li)
+import Html exposing (div, text, Html, h2, p, ul, li, button)
 import Html.Attributes exposing (contenteditable)
+import Html.Events exposing (onClick)
 import List exposing (map)
 import Html.App as App
 
@@ -33,7 +34,7 @@ type alias Volunteer =
   , availability: List String
   }
 
-type Action = None
+type Action = Remove
 
 model : Model
 model =
@@ -91,10 +92,14 @@ dayView day =
     , div [] (map slotView day.slots)
     ]
 
+removeButton : Html Action
+removeButton = 
+  button [onClick Remove] [ text "X" ]
+
 editableList : List String -> Html Action
 editableList list =
   ul []
-    (map (\str -> li [contenteditable True] [ text str ]) list)
+    (map (\str -> li [contenteditable True] [ text str, removeButton ]) list)
 
 volunteerView : Volunteer -> Html Action
 volunteerView volunteer =
