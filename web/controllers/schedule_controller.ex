@@ -1,3 +1,5 @@
+import Enum
+
 defmodule Slamscheduler.ScheduleController do
   use Slamscheduler.Web, :controller
 
@@ -39,15 +41,15 @@ defmodule Slamscheduler.ScheduleController do
     graph = :graph.empty(:directed)
     :graph.add_vertex(graph, "source")
     :graph.add_vertex(graph, "sink")
-    Enum.each(classes, fn class -> 
+    each(classes, fn class -> 
       :graph.add_vertex(graph, class)
       :graph.add_edge(graph, class, "sink", 2)
     end)
-    Enum.each(volunteers, fn %{name: name, skills: skills, availability: availability} -> 
+    each(volunteers, fn %{name: name, skills: skills, availability: availability} -> 
       :graph.add_vertex(graph, name) 
       :graph.add_edge(graph, "source", name, 1)
-      Enum.each(skills, fn skill ->
-        Enum.each(availability, fn day ->
+      each(skills, fn skill ->
+        each(availability, fn day ->
           :graph.add_edge(graph, name, %{skill: skill, day: day}, 1)
         end)
       end)
@@ -55,8 +57,8 @@ defmodule Slamscheduler.ScheduleController do
 
     maxflow = :edmonds_karp.run(graph, "source", "sink", :dfs)
     
-    schedule = Enum.filter(elem(maxflow, 1), fn e -> elem(e, 1) != 0 end) # edges that have flow
-    |> Enum.filter(fn {{edge1, edge2}, weight} -> # second vertex is a map i.e. a class
+    schedule = filter(elem(maxflow, 1), fn e -> elem(e, 1) != 0 end) # edges that have flow
+    |> filter(fn {{edge1, edge2}, weight} -> # second vertex is a map i.e. a class
      case edge2 do
        %{} ->
          true
@@ -64,7 +66,7 @@ defmodule Slamscheduler.ScheduleController do
          false
 		 end
 		end)
-    |> Enum.map(fn {{name, %{skill: skill, day: day}}, weight} ->
+    |> map(fn {{name, %{skill: skill, day: day}}, weight} ->
       %{name: name, skill: skill, day: day}
     end)
 
