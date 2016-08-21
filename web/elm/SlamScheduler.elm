@@ -1,6 +1,7 @@
 module SlamScheduler exposing (..)
 
 import Html exposing (div, text, Html, h2, p, ul, li)
+import Html.Attributes exposing (contenteditable)
 import List exposing (map)
 import Html.App as App
 
@@ -90,14 +91,17 @@ dayView day =
     , div [] (map slotView day.slots)
     ]
 
+editableList : List String -> Html Action
+editableList list =
+  ul []
+    (map (\str -> li [contenteditable True] [ text str ]) list)
+
 volunteerView : Volunteer -> Html Action
 volunteerView volunteer =
   div []
     [ p [] [ text volunteer.name ] 
-    , ul []
-      (map (\skill -> li [] [ text skill ]) volunteer.skills)
-    , ul []
-      (map (\day -> li [] [ text day ]) volunteer.availability)
+    , editableList volunteer.skills
+    , editableList volunteer.availability
     ]
 
 view : Model -> Html Action

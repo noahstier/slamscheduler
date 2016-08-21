@@ -1,4 +1,5 @@
 web/elm/elm-stuff
+web/static/vendor/slamscheduler.js
 _build
 node_modules
 deps/
