@@ -1,6 +1,6 @@
 module SlamScheduler exposing (..)
 
-import Html exposing (div, text, Html, h2, p, ul, li, button)
+import Html exposing (div, text, Html, h2, p, ul, li, button, span)
 import Html.Attributes exposing (contenteditable)
 import Html.Events exposing (onClick)
 import List exposing (map, filter)
@@ -111,7 +111,7 @@ removeButton name day =
 editableList : List String -> String -> Html Action
 editableList list name =
   ul []
-    (map (\str -> li [contenteditable True] [ text str, removeButton name str ]) list)
+    (map (\str -> li [] [ span [contenteditable True] [ text str ], removeButton name str ]) list)
 
 volunteerView : Volunteer -> Html Action
 volunteerView volunteer =
