@@ -3,7 +3,7 @@ module SlamScheduler exposing (..)
 import Html exposing (div, text, Html, h2, p, ul, li, button)
 import Html.Attributes exposing (contenteditable)
 import Html.Events exposing (onClick)
-import List exposing (map)
+import List exposing (map, filter)
 import Html.App as App
 
 main =
@@ -13,9 +13,9 @@ main =
     , update = update
     }
 
-type alias Model = 
+type alias Model =
   { schedule : List Day
-  , volunteers : List Volunteer 
+  , volunteers : List Volunteer
   }
 
 type alias Day =
@@ -34,7 +34,8 @@ type alias Volunteer =
   , availability: List String
   }
 
-type Action = Remove
+type Action 
+  = Remove String String
 
 model : Model
 model =
@@ -79,7 +80,18 @@ model =
   }
 
 update : Action -> Model -> Model
-update action model = model
+update action model = 
+  case action of
+    Remove name day ->
+      { model | volunteers = 
+        model.volunteers
+        |> map ( \v -> 
+          if v.name == name then
+            { v | availability = filter ( \d -> d /= day ) v.availability }
+          else
+            v
+          )
+      }
 
 slotView : Slot -> Html Action
 slotView slot =
@@ -92,26 +104,26 @@ dayView day =
     , div [] (map slotView day.slots)
     ]
 
-removeButton : Html Action
-removeButton = 
-  button [onClick Remove] [ text "X" ]
+removeButton : String -> String -> Html Action
+removeButton name day =
+  button [ onClick (Remove name day) ] [ text "X" ]
 
-editableList : List String -> Html Action
-editableList list =
+editableList : List String -> String -> Html Action
+editableList list name =
   ul []
-    (map (\str -> li [contenteditable True] [ text str, removeButton ]) list)
+    (map (\str -> li [contenteditable True] [ text str, removeButton name str ]) list)
 
 volunteerView : Volunteer -> Html Action
 volunteerView volunteer =
   div []
-    [ p [] [ text volunteer.name ] 
-    , editableList volunteer.skills
-    , editableList volunteer.availability
+    [ p [] [ text volunteer.name ]
+    , editableList volunteer.skills volunteer.name
+    , editableList volunteer.availability volunteer.name
     ]
 
 view : Model -> Html Action
 view model =
-  div [] 
+  div []
     [ div [] (map dayView model.schedule)
     , div [] (map volunteerView model.volunteers)
     ]
