@@ -1,12 +1,12 @@
-defmodule Slamscheduler.Web do
+defmodule Slamscheduler2.Web do
   @moduledoc """
   A module that keeps using definitions for controllers,
   views and so on.
 
   This can be used in your application as:
 
-      use Slamscheduler.Web, :controller
-      use Slamscheduler.Web, :view
+      use Slamscheduler2.Web, :controller
+      use Slamscheduler2.Web, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -30,12 +30,12 @@ defmodule Slamscheduler.Web do
     quote do
       use Phoenix.Controller
 
-      alias Slamscheduler.Repo
+      alias Slamscheduler2.Repo
       import Ecto
       import Ecto.Query
 
-      import Slamscheduler.Router.Helpers
-      import Slamscheduler.Gettext
+      import Slamscheduler2.Router.Helpers
+      import Slamscheduler2.Gettext
     end
   end
 
@@ -49,9 +49,9 @@ defmodule Slamscheduler.Web do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      import Slamscheduler.Router.Helpers
-      import Slamscheduler.ErrorHelpers
-      import Slamscheduler.Gettext
+      import Slamscheduler2.Router.Helpers
+      import Slamscheduler2.ErrorHelpers
+      import Slamscheduler2.Gettext
     end
   end
 
@@ -65,10 +65,10 @@ defmodule Slamscheduler.Web do
     quote do
       use Phoenix.Channel
 
-      alias Slamscheduler.Repo
+      alias Slamscheduler2.Repo
       import Ecto
       import Ecto.Query
-      import Slamscheduler.Gettext
+      import Slamscheduler2.Gettext
     end
   end
 

@@ -1,3 +1,3 @@
-defmodule Slamscheduler.LayoutViewTest do
-  use Slamscheduler.ConnCase, async: true
+defmodule Slamscheduler2.LayoutViewTest do
+  use Slamscheduler2.ConnCase, async: true
 end

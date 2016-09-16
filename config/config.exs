@@ -6,15 +6,15 @@
 use Mix.Config
 
 # General application configuration
-config :slamscheduler,
-  ecto_repos: [Slamscheduler.Repo]
+config :slamscheduler2,
+  ecto_repos: [Slamscheduler2.Repo]
 
 # Configures the endpoint
-config :slamscheduler, Slamscheduler.Endpoint,
+config :slamscheduler2, Slamscheduler2.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "kyGPhLX50MPwuxTWbOLjY1JjWndpiZhvC3w6xPXLEes8xws35drE1TpdAaUqaxq0",
-  render_errors: [view: Slamscheduler.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Slamscheduler.PubSub,
+  secret_key_base: "L164xbboEx0t0gaVP1kWoZbUMBnvlwQfP/sKvawko/zu3ola2i1unAgaP62FMoY1",
+  render_errors: [view: Slamscheduler2.ErrorView, accepts: ~w(html json)],
+  pubsub: [name: Slamscheduler2.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger

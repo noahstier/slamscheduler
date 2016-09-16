@@ -1,0 +1,6 @@
+<div class="schedule-day">
+  <h2 class="day-header"><%= @day %></h2>
+  <%= for {skill, names} <- @classes do %>
+    <%= render "class.html", skill: skill, names: names %>
+  <% end %>
+</div>

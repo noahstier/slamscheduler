@@ -1,4 +1,4 @@
-defmodule Slamscheduler.ModelCase do
+defmodule Slamscheduler2.ModelCase do
   @moduledoc """
   This module defines the test case to be used by
   model tests.
@@ -16,20 +16,20 @@ defmodule Slamscheduler.ModelCase do
 
   using do
     quote do
-      alias Slamscheduler.Repo
+      alias Slamscheduler2.Repo
 
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Slamscheduler.ModelCase
+      import Slamscheduler2.ModelCase
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Slamscheduler.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Slamscheduler2.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Slamscheduler.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Slamscheduler2.Repo, {:shared, self()})
     end
 
     :ok
@@ -59,7 +59,7 @@ defmodule Slamscheduler.ModelCase do
   """
   def errors_on(struct, data) do
     struct.__struct__.changeset(struct, data)
-    |> Ecto.Changeset.traverse_errors(&Slamscheduler.ErrorHelpers.translate_error/1)
+    |> Ecto.Changeset.traverse_errors(&Slamscheduler2.ErrorHelpers.translate_error/1)
     |> Enum.flat_map(fn {key, errors} -> for msg <- errors, do: {key, msg} end)
   end
 end

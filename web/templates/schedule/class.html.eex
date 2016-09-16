@@ -1,0 +1,8 @@
+<div class="schedule-class">
+  <h3 class="class-header"><%= @skill %></h3>
+  <ul>
+    <%= for name <- @names do %>
+      <li class="class-instructor"><%= name %></li>
+    <% end %>
+  </ul>
+</div>

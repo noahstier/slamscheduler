@@ -2,7 +2,7 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :slamscheduler, Slamscheduler.Endpoint,
+config :slamscheduler2, Slamscheduler2.Endpoint,
   http: [port: 4001],
   server: false
 
@@ -10,10 +10,10 @@ config :slamscheduler, Slamscheduler.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
-config :slamscheduler, Slamscheduler.Repo,
+config :slamscheduler2, Slamscheduler2.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "slamscheduler_test",
+  database: "slamscheduler2_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

@@ -1,4 +1,4 @@
-defmodule Slamscheduler.ErrorHelpers do
+defmodule Slamscheduler2.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
@@ -32,9 +32,9 @@ defmodule Slamscheduler.ErrorHelpers do
     #     dgettext "errors", "is invalid"
     #
     if count = opts[:count] do
-      Gettext.dngettext(Slamscheduler.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(Slamscheduler2.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(Slamscheduler.Gettext, "errors", msg, opts)
+      Gettext.dgettext(Slamscheduler2.Gettext, "errors", msg, opts)
     end
   end
 end

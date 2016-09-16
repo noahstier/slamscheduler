@@ -1,3 +1,3 @@
-defmodule Slamscheduler.PageViewTest do
-  use Slamscheduler.ConnCase, async: true
+defmodule Slamscheduler2.PageViewTest do
+  use Slamscheduler2.ConnCase, async: true
 end

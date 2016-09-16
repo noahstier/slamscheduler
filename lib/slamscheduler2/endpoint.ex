@@ -1,14 +1,14 @@
-defmodule Slamscheduler.Endpoint do
-  use Phoenix.Endpoint, otp_app: :slamscheduler
+defmodule Slamscheduler2.Endpoint do
+  use Phoenix.Endpoint, otp_app: :slamscheduler2
 
-  socket "/socket", Slamscheduler.UserSocket
+  socket "/socket", Slamscheduler2.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
   # You should set gzip to true if you are running phoenix.digest
   # when deploying your static files in production.
   plug Plug.Static,
-    at: "/", from: :slamscheduler, gzip: false,
+    at: "/", from: :slamscheduler2, gzip: false,
     only: ~w(css fonts images js favicon.ico robots.txt)
 
   # Code reloading can be explicitly enabled under the
@@ -35,8 +35,8 @@ defmodule Slamscheduler.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   plug Plug.Session,
     store: :cookie,
-    key: "_slamscheduler_key",
-    signing_salt: "pewrdC8V"
+    key: "_slamscheduler2_key",
+    signing_salt: "RYQMeOPM"
 
-  plug Slamscheduler.Router
+  plug Slamscheduler2.Router
 end

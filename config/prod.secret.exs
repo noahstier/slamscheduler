@@ -8,13 +8,13 @@ use Mix.Config
 # file or create a script for recreating it, since it's
 # kept out of version control and might be hard to recover
 # or recreate for your teammates (or you later on).
-config :slamscheduler, Slamscheduler.Endpoint,
-  secret_key_base: "Bb0B83hMyMHRg2G6rjLFdaJVALJ0iTadIi6muqULdKaxvwK/DIOGkishiFd1Xw7u"
+config :slamscheduler2, Slamscheduler2.Endpoint,
+  secret_key_base: "ENNy3CvW5CamvDvHsx3XYzLvhK9ayNY6nj+XEkAwsDLyo8doCRcQrUosSyXgbRo6"
 
 # Configure your database
-config :slamscheduler, Slamscheduler.Repo,
+config :slamscheduler2, Slamscheduler2.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "slamscheduler_prod",
+  database: "slamscheduler2_prod",
   pool_size: 20

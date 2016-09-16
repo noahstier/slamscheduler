@@ -1,5 +1,5 @@
-defmodule Slamscheduler.Router do
-  use Slamscheduler.Web, :router
+defmodule Slamscheduler2.Router do
+  use Slamscheduler2.Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,17 +13,14 @@ defmodule Slamscheduler.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Slamscheduler do
+  scope "/", Slamscheduler2 do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
-  scope "/api", Slamscheduler do
-    pipe_through :api
-
-    resources "/volunteers", VolunteerController
-    get "/schedule", ScheduleController, :generate
-  end
+  # scope "/api", Slamscheduler2 do
+  #   pipe_through :api
+  # end
 end

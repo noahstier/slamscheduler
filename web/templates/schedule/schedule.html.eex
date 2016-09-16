@@ -1,0 +1,5 @@
+<div class="schedule">
+  <%= for {day, classes} <- @schedule do %>
+    <%= render "day.html", day: day, classes: classes %>
+  <% end %>
+</div>

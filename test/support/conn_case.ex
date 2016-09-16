@@ -1,4 +1,4 @@
-defmodule Slamscheduler.ConnCase do
+defmodule Slamscheduler2.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -20,23 +20,23 @@ defmodule Slamscheduler.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      alias Slamscheduler.Repo
+      alias Slamscheduler2.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
-      import Slamscheduler.Router.Helpers
+      import Slamscheduler2.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Slamscheduler.Endpoint
+      @endpoint Slamscheduler2.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Slamscheduler.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Slamscheduler2.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Slamscheduler.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Slamscheduler2.Repo, {:shared, self()})
     end
 
     {:ok, conn: Phoenix.ConnTest.build_conn()}

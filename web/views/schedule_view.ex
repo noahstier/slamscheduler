@@ -1,8 +1,3 @@
-defmodule Slamscheduler.ScheduleView do
-  use Slamscheduler.Web, :view
-
-  def render("index.json", %{schedule: schedule}) do
-    schedule
-  end
+defmodule Slamscheduler2.ScheduleView do
+  use Slamscheduler2.Web, :view
 end
-

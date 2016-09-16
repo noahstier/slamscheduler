@@ -1,4 +1,4 @@
-# Slamscheduler
+# Slamscheduler2
 
 To start your Phoenix app:
 

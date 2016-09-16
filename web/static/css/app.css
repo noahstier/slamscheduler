@@ -1,1 +1,114 @@
-/* This file is for your main application css. */
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+h2 {margin: 0; padding: 0;}
+h3 {margin: 0; padding: 0;}
+
+body {
+  color: #666;
+  text-align: center;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.schedules-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.schedule {
+  display: flex;
+  flex-direction: row;
+  background-color: #eee;
+}
+
+.schedule-day {
+  display: flex;
+  flex-direction: column;
+}
+
+.day-header {
+  background-color: #64cec4;
+  padding: 5px;  
+}
+
+.schedule-class {
+  display: flex;
+  flex-direction: column;
+}
+
+.class-header {
+  padding: 5px;  
+  background-color: #ddd;
+}
+
+.class-instructor {
+  padding: 5px;
+}
+
+#volunteers-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.volunteer {
+  display: flex; 
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.volunteer-options {
+  display: flex;
+  flex-direction: column;
+}
+
+.availability {
+  display: flex;
+  flex-direction: row;
+}
+
+.skills {
+  display: flex;
+  flex-direction: row;
+}
+
+.checkbox {
+  border: 1px solid;
+  border-radius: 3px;
+  margin: 1.5px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+
+}
+
+.checkbox-on {
+  background-color: #64cec4;
+}
+
+.checkbox-off {
+  background-color: #ddd;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+  cursor: pointer;
+}
+
+.classes-container {
+  display: flex;
+  flex-direction: row;
+}

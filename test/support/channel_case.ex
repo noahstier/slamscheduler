@@ -1,4 +1,4 @@
-defmodule Slamscheduler.ChannelCase do
+defmodule Slamscheduler2.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -20,22 +20,22 @@ defmodule Slamscheduler.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
-      alias Slamscheduler.Repo
+      alias Slamscheduler2.Repo
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
 
 
       # The default endpoint for testing
-      @endpoint Slamscheduler.Endpoint
+      @endpoint Slamscheduler2.Endpoint
     end
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Slamscheduler.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Slamscheduler2.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Slamscheduler.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Slamscheduler2.Repo, {:shared, self()})
     end
 
     :ok

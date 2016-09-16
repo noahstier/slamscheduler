@@ -1,4 +1,4 @@
 ExUnit.start
 
-Ecto.Adapters.SQL.Sandbox.mode(Slamscheduler.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Slamscheduler2.Repo, :manual)
 

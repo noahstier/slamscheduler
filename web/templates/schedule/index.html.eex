@@ -1,0 +1,72 @@
+<div class="app-container">
+  <div class="schedules-container">
+    <!--div>
+      <span>Show</span>
+      <input type="number" value="10"/>
+      <span>schedules</span>
+    </div-->
+    <%= for {schedule, i} <- Enum.with_index(@schedules) do %>
+      <h1><%= i %></h1>
+      <%= render "schedule.html", schedule: schedule %>
+    <% end %>
+  </div>
+  <div id="volunteers-container">
+    <!--input type="file" /-->
+  </div>
+</div>
+
+<div hidden id="volunteer-template" class="volunteer">
+  <form>
+    <input placeholder="name"/>
+    <div class="volunteer-options">
+      <ul class="availability">
+        <li>
+          <input type="checkbox" name="Mo">
+          <span>Mo</span>
+        </li>
+        <li>
+          <input type="checkbox" name="Tu">
+          <span>Tu</span>
+        </li>
+        <li>
+          <input type="checkbox" name="We">
+          <span>We</span>
+        </li>
+        <li>
+          <input type="checkbox" name="Th">
+          <span>Th</span>
+        </li>
+        <li>
+          <input type="checkbox" name="Fr">
+          <span>Fr</span>
+        </li>
+      </ul>
+      <ul class="skills">
+        <li>
+          <input type="checkbox" name="Guitar">
+          <span>Guitar</span>
+        </li>
+        <li>
+          <input type="checkbox" name="Piano">
+          <span>Piano</span>
+        </li>
+        <li>
+          <input type="checkbox" name="Voice">
+          <span>Voice</span>
+        </li>
+        <li>
+          <input type="checkbox" name="Rockband">
+          <span>Rockband</span>
+        </li>
+        <li>
+          <input type="checkbox" name="Songwriting">
+          <span>Songwriting</span>
+        </li>
+        <li>
+          <input type="checkbox" name="Percussion">
+          <span>Percussion</span>
+        </li>
+      </ul>
+    </div>
+  </form>
+</div>

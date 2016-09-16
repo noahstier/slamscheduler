@@ -1,5 +1,5 @@
-defmodule Slamscheduler.ErrorView do
-  use Slamscheduler.Web, :view
+defmodule Slamscheduler2.ErrorView do
+  use Slamscheduler2.Web, :view
 
   def render("404.html", _assigns) do
     "Page not found"
