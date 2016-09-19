@@ -1,23 +1,23 @@
 import React from 'react';
 import {CustomCheckbox} from './custom_checkbox';
 import {days, skills} from './canon';
-import {zip} from './helpers';
+import {List, Map} from 'immutable';
 
 export var AddVolunteer = React.createClass({
   getInitialState: function() {
     return {
       name: "",
-      availability: [false, false, false, false, false],
-      skills: [false, false, false, false, false, false]
+      availability: List([false, false, false, false, false]),
+      skills: List([false, false, false, false, false, false])
     }
   },
   checkboxClicked: function(e) {
-    var new_trait = this.state[e.trait];
-    new_trait[e.ind] = !new_trait[e.ind];
-    // computed keys would be nice here
-    var newState = {};
-    newState[e.trait] = new_trait;
-    this.setState(newState);
+    this.setState({
+      [e.trait]: this.state[e.trait].update(
+        e.ind,
+        (_ => !_)
+      )
+    });
   },
   nameChanged: function(e) {
     this.setState({
@@ -25,7 +25,7 @@ export var AddVolunteer = React.createClass({
     });
   },
   addClicked: function() {
-    this.props.addClicked(this.state)
+    this.props.addClicked(Map(this.state))
     this.setState(this.getInitialState());
   },
   render: function() {
@@ -36,22 +36,22 @@ export var AddVolunteer = React.createClass({
         <div className="volunteer-options">
           <ul className="availability">
             {
-              zip(days, this.state.availability).map((day, i) => 
+              days.zip(this.state.availability).map(([day, checked], i) => 
                 <li key={i}>
                   <CustomCheckbox handleClick={this.checkboxClicked}
-                    checked={day[1]} trait="availability" ind={i} 
-                    text={day[0]} />
+                    checked={checked} trait="availability" ind={i} 
+                    text={day} />
                 </li>
               )
             }
           </ul>
           <ul className="skills">
             {
-              zip(skills, this.state.skills).map((skill, i) =>
+              skills.zip(this.state.skills).map(([skill, checked], i) =>
                 <li key={i}>
                   <CustomCheckbox handleClick={this.checkboxClicked}
-                    checked={skill[1]} trait="skills" ind={i}
-                    text={skill[0]} />
+                    checked={checked} trait="skills" ind={i}
+                    text={skill} />
                 </li>
               )
             }

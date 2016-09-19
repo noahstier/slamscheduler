@@ -1,7 +1,3 @@
-export function zip(list_a, list_b) {
-  return list_a.map((el, i) => [el, list_b[i]]);
-}
-
 export function drop_at(objs, ind) {
   return objs.slice(0, ind).concat(objs.slice(ind+1));
 }

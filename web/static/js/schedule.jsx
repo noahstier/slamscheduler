@@ -24,17 +24,19 @@ var Class = React.createClass({
 
 var Day = React.createClass({
   render: function() {
-    var skills_to_show = skills.reduce((acc, skill) =>
-      this.props.classes[skill] ? 
-        [...acc, {name: skill, instructors: this.props.classes[skill]}] : acc
-    , [])
+    var skills_to_show = skills
+      .map(skill =>
+        this.props.classes.get(skill) ? 
+          {name: skill, instructors: this.props.classes.get(skill)} : false
+      )
+      .filter(_ => _)
+
     return (
       <div className="schedule-day">
         <h2 className="day-header">{this.props.name}</h2>
           {
-            skills_to_show.map(skill =>
-              <Class key={skill.name} skill={skill.name} 
-                instructors={skill.instructors} />
+            skills_to_show.map(({name, instructors}) =>
+              <Class key={name} skill={name} instructors={instructors} />
             )
           }
       </div>
@@ -43,9 +45,6 @@ var Day = React.createClass({
 });
 
 export var Schedule = React.createClass({
-  getInitialState: function() {
-    return {days: this.props.initialData};
-  },
   render: function() {
     return (
       <div>
@@ -53,10 +52,9 @@ export var Schedule = React.createClass({
         <div className="schedule">
           {
             days.map(day =>
-              <Day key={day} name={day} classes={this.state.days[day]} />
+              <Day key={day} name={day} classes={this.props.schedule.get(day)} />
             )
           }
-
         </div>
       </div>
     );

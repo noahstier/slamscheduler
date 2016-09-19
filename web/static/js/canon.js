@@ -1,2 +1,4 @@
-export var skills = ["Guitar", "Piano", "Voice", "Percussion", "Rockband", "Songwriting"];
-export var days = ["Mo", "Tu", "We", "Th", "Fr"];
+import {List, Map} from 'immutable';
+
+export var skills = List(["Guitar", "Piano", "Voice", "Percussion", "Rockband", "Songwriting"]);
+export var days = List(["Mo", "Tu", "We", "Th", "Fr"]);

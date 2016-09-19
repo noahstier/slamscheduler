@@ -1,6 +1,7 @@
 import React from 'react';
 import {days, skills} from './canon';
 import {CustomCheckbox} from './custom_checkbox';
+import {List, Map, fromJS} from 'immutable';
 
 var Class = React.createClass({
   handleClick: function() {
@@ -26,7 +27,7 @@ var Day = React.createClass({
         <h2 className="day-header">{this.props.name}</h2>
           {
             skills.map(skill =>
-              <Class key={skill} skill={skill} checked={this.props.classes[skill]} 
+              <Class key={skill} skill={skill} checked={this.props.classes.get(skill)} 
                 handleClick={this.handleClick} />
             )
           }
@@ -36,15 +37,7 @@ var Day = React.createClass({
 });
 
 export var ClassOfferings = React.createClass({
-  getInitialState: function() {
-    return this.props.initialData;
-  },
   handleClick: function(day, skill) {
-    // var newState = {};
-    // newState[day] = this.state[day];
-    // newState[day][skill] = !newState[day][skill];
-    // this.setState(newState);
-    // this.props.handleClick(newState);
     this.props.handleClick(day, skill)
   },
   render: function() {
@@ -52,7 +45,7 @@ export var ClassOfferings = React.createClass({
       <div className="classes-container">
         {
           days.map(day =>
-            <Day name={day} key={day} classes={this.state[day]} 
+            <Day name={day} key={day} classes={this.props.offerings.get(day)} 
               handleClick={this.handleClick} />
           )
         }

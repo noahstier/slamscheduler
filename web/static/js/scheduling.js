@@ -1,157 +1,79 @@
 import {days, skills} from './canon';
-import {zip, drop_at, flat_map} from './helpers';
-
-var Immutable = require('immutable');
-
-function format_volunteer(volunteer) {
-  return {
-    name: volunteer.name,
-    skills: zip(volunteer.skills, skills)
-      .filter(pair => pair[0])
-      .map(pair => pair[1]),
-    availability: zip(volunteer.availability, days)
-      .filter(pair => pair[0])
-      .map(pair => pair[1])
-  }
-}
+import {List, Map, fromJS} from 'immutable';
 
 function possible_slots(volunteer) {
-  return volunteer.skills.reduce((acc, skill) =>
-    acc.concat(
-      volunteer.availability.map(day =>
-        ({skill: skill, day: day})
-      )
+  var leskills = skills
+    .map((skill, i) =>
+      volunteer.get('skills').get(i) ? skill : false
     )
-  , [])
+    .filter(_ => _)
+
+  var ledays = days
+    .map((day, i) =>
+      volunteer.get('availability').get(i) ? day : false
+    )
+    .filter(_ => _)
+
+  return ledays.flatMap(day =>
+    leskills.map(skill =>
+      Map({day: day, skill: skill})
+    )
+  )
 }
 
-function class_offered(slot, slots) {
-  return slots
-    .filter(s => s.day == slot.day && s.skill == slot.skill) 
-    .length > 0
+function available(schedule, slot) {
+  var leclass = schedule
+    .get(slot.get('day'))
+    .get(slot.get('skill'));
+
+  if (leclass)
+    return leclass.size < 2;
+  else
+    return false
 }
 
-function includes(slots, slot) {
-  var found = false;
-  slots.some(function(s) {
-    if (s.day == slot.day && s.skill == slot.skill) {
-      found = true;
-      return true;
-    }
-  });
-  return found;
-}
-
-
-function drop_one(slots, slot) {
-  var ind = -1;
-  slots.some(function(s, i) {
-    if (s.day == slot.day && s.skill == slot.skill) {
-      ind = i;
-      return true;
-    }
-  });
-  return drop_at(slots, ind);
-}
-
-function format_schedules(schedules) {
-  var str = Object.prototype.toString.call(schedules[0]);
-  if (str == "[object Undefined]") return [];
-  if (str == "[object Object]") {
-    // schedules is a list of slots
-    return format_schedule(schedules);
+function schedules(volunteers, current_schedule) {
+  if (volunteers.size == 0) {
+    return List([current_schedule]);
   }
-  if (str == "[object Array]") {
-    // schedules is a list of lists of ... of slots
-    var result = flat_map(schedules, format_schedules);
-    return result;
-    // return flat_map(schedules, format_schedules);
-  }
-}
-  
-function format_schedule(schedule) {
-  return schedule.reduce(function(acc, slot) {
-    var day = acc[slot.day];
-    var le_class = (day[slot.skill] || []).concat([slot.name]);
-    acc[slot.day][slot.skill] = le_class;
-    return acc;
-  }, {
-    "Mo": {},
-    "Tu": {},
-    "We": {},
-    "Th": {},
-    "Fr": {}
-  });
-}
 
-// function generate_schedules(volunteers, open_slots, current_schedule) {
-//   if (open_slots.length == 0 || volunteers.length == 0) {
-//     return current_schedule;
-//   }
-// 
-//   var first_volunteer = volunteers[0];
-//   var other_volunteers = volunteers.slice(1);
-// 
-//   var slots = possible_slots(first_volunteer)
-//     .filter(slot => includes(open_slots, slot))
-// 
-//   if (slots.length == 0) {
-//     return generate_schedules(
-//       other_volunteers,
-//       open_slots,
-//       current_schedule
-//     );
-//   }
-//   else {
-//     return slots.map(slot => 
-//       generate_schedules(
-//         other_volunteers,
-//         drop_one(open_slots, slot),
-//         current_schedule
-//       )
-//     );
-//   }
-// }
-
-function generate_schedules(volunteers, open_slots, taken_slots=[]) {
-  if (open_slots.length == 0 || volunteers.length == 0) return taken_slots;
-
-  var first_volunteer = volunteers[0];
-  var other_volunteers = volunteers.slice(1);
+  var first_volunteer = volunteers.first();
+  var other_volunteers = volunteers.shift();
 
   var slots = possible_slots(first_volunteer)
-    .filter(slot => includes(open_slots, slot))
+    .filter(slot => available(current_schedule, slot));
 
-  if (slots.length == 0) {
-    return generate_schedules(
+  if (slots.size == 0) {
+    return schedules(
       other_volunteers,
-      open_slots,
-      taken_slots
+      current_schedule
     );
   }
-  else {
-    return slots.map(slot => generate_schedules(
+
+  //var mapFunc = other_volunteers.size <= 1 ? 'map' : 'flatMap'
+  //return slots[mapFunc](slot =>
+  return slots.flatMap(slot =>
+    schedules(
       other_volunteers,
-      drop_one(open_slots, slot),
-      [...taken_slots, Object.assign(slot, {name: first_volunteer.name})]
-    ));
-  }
+      current_schedule.updateIn(
+        [slot.get('day'), slot.get('skill')],
+        (leclass) => leclass.push(first_volunteer.get('name'))
+      )
+    )
+  );
 }
 
-export function all_schedules(volunteers, classes) {
-  volunteers = volunteers.map(format_volunteer);
-  var taken_slots = [];
-  var open_slots = [];
-  for (var day in classes) {
-    for (var skill in classes[day]) {
-      if (classes[day][skill]) {
-        open_slots.push({skill: skill, day: day});
-      }
-    }
-  }
-  open_slots = open_slots.map(slot =>
-    Immutable.Map(slot)
-  )
-  var schedules = generate_schedules(volunteers, open_slots, taken_slots);
-  return format_schedules(schedules);
+export function all_schedules(volunteers, classes_offered) {
+  volunteers = fromJS(volunteers);
+  var initial_schedule = fromJS(classes_offered).map((classes, day) =>
+    classes
+      .map((offered, skill) => offered ? List() : false)
+      .filter(_ => _)
+  );
+  var scheds = schedules(volunteers, initial_schedule);
+  return scheds;
 }
+
+// var class_offerings = {"Mo":{"Guitar":true,"Piano":false,"Voice":false,"Percussion":false,"Rockband":false,"Songwriting":false},"Tu":{"Guitar":false,"Piano":false,"Voice":false,"Percussion":false,"Rockband":false,"Songwriting":false},"We":{"Guitar":true,"Piano":false,"Voice":true,"Percussion":false,"Rockband":false,"Songwriting":false},"Th":{"Guitar":false,"Piano":false,"Voice":false,"Percussion":false,"Rockband":false,"Songwriting":false},"Fr":{"Guitar":false,"Piano":false,"Voice":false,"Percussion":false,"Rockband":false,"Songwriting":false}};
+
+// var volunteers = [{"name":"noah","availability":[false,false,false,false,false],"skills":[false,false,false,false,false,false]},{"name":"roi","availability":[true,false,true,false,false],"skills":[true,false,true,false,false,false]}];
