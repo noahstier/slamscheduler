@@ -1,0 +1,27 @@
+<%= form_tag("/volunteers", method: "patch") %>
+  <div class="volunteer">
+    <input name="name" type="text" value="<%= @volunteer.name %>">
+    <div class="volunteer-options">
+      <ul class="availability">
+        <%= for day <- @days do %>
+          <li>
+            <%= render Slamscheduler2.SharedView, "custom_checkbox.html", 
+              id: @volunteer.name <> day, label: day, 
+  						checked: Enum.member?(@volunteer.availability, day)
+            %>
+          </li>
+        <% end %>
+      </ul>
+      <ul class="skills">
+        <%= for skill <- @skills do %>
+          <li>
+            <%= render Slamscheduler2.SharedView, "custom_checkbox.html", 
+              id: @volunteer.name <> skill, label: skill, 
+  						checked: Enum.member?(@volunteer.skills, skill)
+            %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</form>

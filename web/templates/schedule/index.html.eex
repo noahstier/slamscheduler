@@ -1,72 +1,48 @@
 <div class="app-container">
   <div class="schedules-container">
-    <!--div>
-      <span>Show</span>
-      <input type="number" value="10"/>
-      <span>schedules</span>
-    </div-->
-    <%= for {schedule, i} <- Enum.with_index(@schedules) do %>
-      <h1><%= i %></h1>
-      <%= render "schedule.html", schedule: schedule %>
-    <% end %>
+    <%= render "schedule.html", schedule: @schedule %>
   </div>
   <div id="volunteers-container">
-    <!--input type="file" /-->
+    <%= for volunteer <- @volunteers do %>
+      <%= render( 
+        "volunteer.html", 
+        volunteer: volunteer,
+        days: @days,
+        skills: @skills)
+      %>
+    <% end %>
+    <div id="volunteer-template" class="volunteer">
+      <%= form_tag("/volunteers", method: :post) %>
+        <input name="name" placeholder="name"/>
+        <div class="volunteer-options">
+          <ul class="availability">
+            <%= for day <- @days do %>
+              <li>
+                <%= render Slamscheduler2.SharedView, "custom_checkbox.html", 
+                  id: "template" <> day, label: day, 
+					      	checked: false
+                %>
+              </li>
+            <% end %>
+          </ul>
+          <ul class="skills">
+            <%= for skill <- @skills do %>
+              <li>
+                <%= render Slamscheduler2.SharedView, "custom_checkbox.html", 
+                  id: "template" <> skill, label: skill, 
+					      	checked: false
+                %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div>
+    <%= form_tag("/volunteers", method: :delete) %>
+      <input type="submit" />
+    </form>
   </div>
 </div>
 
-<div hidden id="volunteer-template" class="volunteer">
-  <form>
-    <input placeholder="name"/>
-    <div class="volunteer-options">
-      <ul class="availability">
-        <li>
-          <input type="checkbox" name="Mo">
-          <span>Mo</span>
-        </li>
-        <li>
-          <input type="checkbox" name="Tu">
-          <span>Tu</span>
-        </li>
-        <li>
-          <input type="checkbox" name="We">
-          <span>We</span>
-        </li>
-        <li>
-          <input type="checkbox" name="Th">
-          <span>Th</span>
-        </li>
-        <li>
-          <input type="checkbox" name="Fr">
-          <span>Fr</span>
-        </li>
-      </ul>
-      <ul class="skills">
-        <li>
-          <input type="checkbox" name="Guitar">
-          <span>Guitar</span>
-        </li>
-        <li>
-          <input type="checkbox" name="Piano">
-          <span>Piano</span>
-        </li>
-        <li>
-          <input type="checkbox" name="Voice">
-          <span>Voice</span>
-        </li>
-        <li>
-          <input type="checkbox" name="Rockband">
-          <span>Rockband</span>
-        </li>
-        <li>
-          <input type="checkbox" name="Songwriting">
-          <span>Songwriting</span>
-        </li>
-        <li>
-          <input type="checkbox" name="Percussion">
-          <span>Percussion</span>
-        </li>
-      </ul>
-    </div>
-  </form>
-</div>

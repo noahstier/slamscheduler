@@ -16,7 +16,11 @@ defmodule Slamscheduler2.Router do
   scope "/", Slamscheduler2 do
     pipe_through :browser # Use the default browser stack
 
-    get "/", PageController, :index
+    get "/", ScheduleController, :index
+
+    delete "/volunteers", VolunteersController, :delete
+    post "/volunteers", VolunteersController, :create
+    patch "/volunteers", VolunteersController, :update
   end
 
   # Other scopes may use custom stacks.

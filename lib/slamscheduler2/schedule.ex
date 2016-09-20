@@ -1,37 +1,70 @@
 import Enum
 import Map
-import NoahsLittleHelpers
 
 defmodule Schedule do
 
+  @days ["Mo", "Tu", "We", "Th", "Fr"]
+  @skills ["Guitar", "Piano", "Voice", "Percussion", "Rockband", "Songwriting"]
+
+
   def possible_slots(volunteer) do
-    for skill <- volunteer.skills, day <- volunteer.availability do
-      %{skill: skill, day: day}
-    end
-  end
-  
-  def class_offered?(slot, slots) do
-    slots
-    |> filter(fn s -> s == slot end) # merge because slot also has :name
-    |> Enum.count > 0
+    volunteer.availability
+    |> flat_map(fn day ->
+      volunteer.skills
+      |> map(fn skill ->
+        %{skill: skill, day: day}
+      end)
+    end)
   end
 
-  def taken?(slot), do: Map.get(slot, :name) != nil
+  def create_graph(volunteers, classes) do
+    graph = :graph.empty(:directed, :d)  # d for integer weights
+    :graph.add_vertex(graph, "source")
+    :graph.add_vertex(graph, "sink")
+    each(classes, fn class ->
+      :graph.add_vertex(graph, class)
+      :graph.add_edge(graph, class, "sink", 2)
+    end)
+    each(volunteers, fn vol ->
+      :graph.add_vertex(graph, vol)
+      :graph.add_edge(graph, "source", vol, 1)
+      each(possible_slots(vol), fn slot ->
+        :graph.add_edge(graph, vol, slot, 1)
+      end)
+    end)
+    graph
+  end
 
-  def schedules([], open_slots, taken_slots), do: taken_slots
+  def generate(volunteers, classes) do
+    graph = create_graph(volunteers, classes)
+    {flow, edges} = :edmonds_karp.run(graph, "source", "sink", :dfs)
 
-  def schedules(volunteers, [], taken_slots), do: taken_slots
+    blank_schedule = classes
+      |> reduce(%{}, fn class, sched ->
+        if has_key?(sched, class.day) do
+          if has_key?(sched[class.day], class.skill) do
+            sched
+          else
+            put_in(sched, [class.day, class.skill], [])
+          end
+        else
+          put(sched, class.day, %{class.skill => []})
+        end
+      end)
 
-  def schedules([first_volunteer | other_volunteers], open_slots, taken_slots) do
-    first_volunteer
-    |> possible_slots
-    |> filter(fn slot -> Enum.member?(open_slots, slot) end)
-    |> map(fn slot -> schedules(
-      other_volunteers, 
-      drop_one(open_slots, slot),
-      taken_slots ++ [Map.merge(slot, %{name: first_volunteer.name})]
-    ) end)
-    |> flatten_2
+    slots =
+      for {{%{name: name}, %{day: day, skill: skill}}, flow} <- edges do
+        %{name: name, day: day, skill: skill}
+      end
+
+    schedule = slots
+      |> reduce(blank_schedule, fn slot, sched ->
+        update_in(sched, [slot.day, slot.skill], fn class -> 
+         class ++ [slot.name]
+        end)
+      end)
+      
+    schedule
   end
 
 end

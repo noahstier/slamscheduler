@@ -1,0 +1,8 @@
+<div class="custom-checkbox">
+  <input name="<%= @label %>" type="checkbox" id="<%= @id %>" 
+    <%= if @checked do "checked" end %>
+  >
+  <label for="<%= @id %>">
+    <%= @label %>
+  </label>
+</div>
